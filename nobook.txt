@@ -1,0 +1,63 @@
+# 🐣 Please follow me for new updates https://twitter.com/camenduru
+# 🔥 Please join our discord server https://discord.gg/k5BwmmvJJU
+
+!apt -y update -qq
+!apt -y install -qq aria2
+!pip install -q torch==1.13.1+cu117 torchvision==0.14.1+cu117 -f https://download.pytorch.org/whl/torch_stable.html
+!pip install -q https://github.com/camenduru/stable-diffusion-webui-colab/releases/download/0.0.16/xformers-0.0.16+814314d.d20230118-cp38-cp38-linux_x86_64.whl
+!pip install -q huggingface-hub==0.11.0 -U
+
+!git clone -b v2.0 https://github.com/camenduru/stable-diffusion-webui
+!wget https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-scripts/main/run_n_times.py -O /kaggle/working/stable-diffusion-webui/scripts/run_n_times.py
+!git clone https://github.com/AlUlkesh/stable-diffusion-webui-images-browser /kaggle/working/stable-diffusion-webui/extensions/stable-diffusion-webui-images-browser
+!git clone https://github.com/camenduru/stable-diffusion-webui-huggingface /kaggle/working/stable-diffusion-webui/extensions/stable-diffusion-webui-huggingface
+!git clone -b v2.0 https://github.com/camenduru/sd-civitai-browser /kaggle/working/stable-diffusion-webui/extensions/sd-civitai-browser
+# !git clone https://github.com/Mikubill/sd-webui-controlnet /kaggle/working/stable-diffusion-webui/extensions/sd-webui-controlnet
+# !git clone https://github.com/camenduru/openpose-editor /kaggle/working/stable-diffusion-webui/extensions/openpose-editor
+!git clone https://github.com/kohya-ss/sd-webui-additional-networks /kaggle/working/stable-diffusion-webui/extensions/sd-webui-additional-networks
+!git clone https://github.com/etherealxx/batchlinks-webui /kaggle/working/stable-diffusion-webui/extensions/batchlinks-webui
+!git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui-nsfw-censor /kaggle/working/stable-diffusion-webui/extensions/stable-diffusion-webui-nsfw-censor
+%cd /kaggle/working/stable-diffusion-webui
+
+# !aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_canny-fp16.safetensors -d /kaggle/working/stable-diffusion-webui/extensions/sd-webui-controlnet/models -o control_canny-fp16.safetensors
+# !aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_depth-fp16.safetensors -d /kaggle/working/stable-diffusion-webui/extensions/sd-webui-controlnet/models -o control_depth-fp16.safetensors
+# !aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_hed-fp16.safetensors -d /kaggle/working/stable-diffusion-webui/extensions/sd-webui-controlnet/models -o control_hed-fp16.safetensors
+# !aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_mlsd-fp16.safetensors -d /kaggle/working/stable-diffusion-webui/extensions/sd-webui-controlnet/models -o control_mlsd-fp16.safetensors
+# !aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_normal-fp16.safetensors -d /kaggle/working/stable-diffusion-webui/extensions/sd-webui-controlnet/models -o control_normal-fp16.safetensors
+# !aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_openpose-fp16.safetensors -d /kaggle/working/stable-diffusion-webui/extensions/sd-webui-controlnet/models -o control_openpose-fp16.safetensors
+# !aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_scribble-fp16.safetensors -d /kaggle/working/stable-diffusion-webui/extensions/sd-webui-controlnet/models -o control_scribble-fp16.safetensors
+# !aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_seg-fp16.safetensors -d /kaggle/working/stable-diffusion-webui/extensions/sd-webui-controlnet/models -o control_seg-fp16.safetensors
+# !aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/ckpt/ControlNet/resolve/main/hand_pose_model.pth -d /kaggle/working/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/openpose -o hand_pose_model.pth
+# !aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/ckpt/ControlNet/resolve/main/body_pose_model.pth -d /kaggle/working/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/openpose -o body_pose_model.pth
+# !aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/ckpt/ControlNet/resolve/main/dpt_hybrid-midas-501f0c75.pt -d /kaggle/working/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/midas -o dpt_hybrid-midas-501f0c75.pt
+# !aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/ckpt/ControlNet/resolve/main/mlsd_large_512_fp32.pth -d /kaggle/working/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/mlsd -o mlsd_large_512_fp32.pth
+# !aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/ckpt/ControlNet/resolve/main/mlsd_tiny_512_fp32.pth -d /kaggle/working/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/mlsd -o mlsd_tiny_512_fp32.pth
+# !aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/ckpt/ControlNet/resolve/main/network-bsds500.pth -d /kaggle/working/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/hed -o network-bsds500.pth
+# !aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/ckpt/ControlNet/resolve/main/upernet_global_small.pth -d /kaggle/working/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/uniformer -o upernet_global_small.pth
+
+!aria2c --console-log-level=error -c -x 16 -s 16 -k 1M https://huggingface.co/ckpt/anything-v4.5-vae-swapped/resolve/main/anything-v4.5-vae-swapped.safetensors -d /kaggle/working/stable-diffusion-webui/models/Stable-diffusion -o anything-v4.5-vae-swapped.safetensors
+
+!sed -i -e 's/numpy==1.23.3/numpy==1.21.6/g' requirements_versions.txt
+!sed -i -e 's/blendmodes==2022/blendmodes==2021/g' requirements_versions.txt
+!sed -i -e 's/fastapi==0.90.1/fastapi==0.89.1/g' requirements_versions.txt
+!sed -i -e '''/    prepare_environment()/a\    os.system\(f\"""sed -i -e ''\"s/dict()))/dict())).cuda()/g\"'' /kaggle/working/stable-diffusion-webui/repositories/stable-diffusion-stability-ai/ldm/util.py""")''' /kaggle/working/stable-diffusion-webui/launch.py
+
+!npm install -g localtunnel
+import subprocess
+import threading
+import time
+import socket
+def iframe_thread(port):
+    while True:
+        time.sleep(0.5)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        result = sock.connect_ex(('127.0.0.1', port))
+        if result == 0:
+            break
+        sock.close()
+    p = subprocess.Popen(["lt", "--port", "{}".format(port)], stdout=subprocess.PIPE)
+    for line in p.stdout:
+        print(line.decode(), end='')
+threading.Thread(target=iframe_thread, daemon=True, args=(7860,)).start()
+
+!python launch.py --share --xformers --enable-insecure-extension-access --theme dark --gradio-queue
